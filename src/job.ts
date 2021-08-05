@@ -5,15 +5,15 @@ export interface CollectionJob {
    DelaySeconds: number,
    MessageAttributes: Record<string, MessageAttributeValue>,
    MessageBody: string,
-   QueueUrl: "https://sqs.us-east-1.amazonaws.com/076057130695/collection"
+   QueueUrl: string
 } 
 
-export const createJob = (tokenSymbol: Tokens): CollectionJob => {
+export const createJob = (tokenSymbol: Tokens, queueUrl: string): CollectionJob => {
   return {
    DelaySeconds: 10,
    MessageAttributes: { },
    MessageBody: tokenSymbol,
-   QueueUrl: "https://sqs.us-east-1.amazonaws.com/076057130695/collection"
+   QueueUrl: queueUrl
  }
 }
 

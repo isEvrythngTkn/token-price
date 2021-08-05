@@ -1,5 +1,5 @@
 export enum Tokens {
-  BTC = ' BTC',
+  BTC = 'BTC',
   ETH = 'ETH',
   SOL = 'SOL'
 }

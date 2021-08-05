@@ -1,8 +1,9 @@
 // import { DynamoDBClient, ListTablesCommand } from '@aws-sdk/client-dynamodb'
 // import { SQSClient, ListQueuesCommand } from '@aws-sdk/client-sqs'
 import { Queue } from './queue'
-import { createJob, CollectionJob } from './job'
+import { createJob } from './job'
 import { Tokens } from './constants'
+import { config } from './config'
 
 // const region = 'us-east-1'
 
@@ -16,11 +17,10 @@ import { Tokens } from './constants'
 // TokenPrice
 
 const main = async () => {
-  const queue: Queue = new Queue('collection')
-  await queue.init()
+  const queue: Queue = new Queue(config.collectionQueue.url, config.collectionQueue.region)
 
   // create a job
-  const job = createJob(Tokens.BTC)
+  const job = createJob(Tokens.BTC, queue.queueUrl)
   console.log('paul >>> job', job)
 
   // send it to the queue
