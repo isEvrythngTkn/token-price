@@ -1,14 +1,15 @@
-import { SQSClient, ListQueuesCommand, SendMessageCommand, ReceiveMessageCommand } from '@aws-sdk/client-sqs'
+import { SQSClient, ListQueuesCommand, SendMessageCommand, ReceiveMessageCommand, Message } from '@aws-sdk/client-sqs'
 import { CollectionJob } from './job'
 
 export class Queue {
   _queueUrl: string
   client: SQSClient
+  region: string
 
   constructor(queueUrl: string, region: string) {
     this._queueUrl = queueUrl
-    this.client = new SQSClient({ region })
-
+    this.region = region
+    this.client = new SQSClient({ region: this.region })
     // const client = new DynamoDBClient({ region })
     // const sqsClient = new SQSClient({ region })
     // // const command = new ListTablesCommand({})
@@ -26,6 +27,7 @@ export class Queue {
 
   async init (): Promise<void> {
     try {
+      this.client = new SQSClient({ region: this.region })
       const data = await this.client.send(new ListQueuesCommand({}))
       console.log('Success', data)
     } catch (err) {
@@ -44,7 +46,7 @@ export class Queue {
     console.log('paul >>> result', result)
   }
 
-  async getMessages(): Promise<string[]> {
+  async getMessages(): Promise<Message[] | undefined> {
     const params = {
       AttributeNames: [
          "SentTimestamp"
@@ -54,16 +56,15 @@ export class Queue {
          "All"
       ],
       QueueUrl: this._queueUrl,
-      VisibilityTimeout: 20,
+      VisibilityTimeout: 1, 
       WaitTimeSeconds: 0
     }
 
     const command = new ReceiveMessageCommand(params)
     const result = await this.client.send(command)
+    console.log('paul >>> result', result)
     
     return result.Messages
-      ? result.Messages.map(message => message.Body ?? '')
-      : []
   }
 
   // async fetchQueueNames (): void {
