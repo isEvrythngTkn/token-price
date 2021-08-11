@@ -7,8 +7,6 @@ import { Tokens } from './constants'
 import TokenPrice from './tokenPrice'
 
 const main = async () => {
-  console.log('paul >>> worker')
-
   // look for job message(s)
   const queue = new Queue(config.collectionQueue.url, config.collectionQueue.region)
   await queue.init()
@@ -49,7 +47,7 @@ const main = async () => {
       console.error(err)
     }
   }
-  // call the collector for the job
+
   // delete the message(s)
 }
 

@@ -10,19 +10,6 @@ export class Queue {
     this._queueUrl = queueUrl
     this.region = region
     this.client = new SQSClient({ region: this.region })
-    // const client = new DynamoDBClient({ region })
-    // const sqsClient = new SQSClient({ region })
-    // // const command = new ListTablesCommand({})
-    // try {
-    //   // const results = await client.send(command)
-    //   // console.log(results.TableNames.join('\n'))
-    //   const data = await sqsClient.send(new ListQueuesCommand({}))
-    //   console.log('Success', data)
-      
-      
-    // } catch (err) {
-    //   console.error(err)
-    // }
   }
 
   async init (): Promise<void> {
@@ -66,19 +53,4 @@ export class Queue {
     
     return result.Messages
   }
-
-  // async fetchQueueNames (): void {
-  //   const sqsClient = new SQSClient({ region })
-  //   // const command = new ListTablesCommand({})
-  //   try {
-  //     // const results = await client.send(command)
-  //     // console.log(results.TableNames.join('\n'))
-  //     const data = await sqsClient.send(new ListQueuesCommand({}))
-  //     console.log('Success', data)
-      
-      
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
 }
